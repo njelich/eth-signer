@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Get Public Key</title>
+</head>
+
+<body>
+   <div style="margin-bottom:5px"><strong>Make sure you're running this script using a local (live) server.</strong></div>
+   <div style="margin-bottom:5px">Enable Metamask, the click on the sign button and sign with your wallet to get your message signature</div>
+   <div style="margin-bottom:5px"><button onclick="enableMM()">Enable Metamask</button></div>
+   <div style="margin-bottom:20px"><button onclick="signMessage()">Sign</button></div>
+   <input style="margin-bottom:20px" name="message" type="text" id="message"/>
+   <div>Signature: <span id="signature"></span></div>
+
+   <script src="https://cdn.jsdelivr.net/npm/ethers@5.4.7/dist/ethers.umd.min.js" type="application/javascript"></script>
+   <script>
+
+      function enableMM() {
+         window.ethereum.send('eth_requestAccounts');
+      }
+
+      async function signMessage() {
+         const provider = new ethers.providers.Web3Provider(window.ethereum);
+         const signer = provider.getSigner();
+         const message = document.getElementById('message').value
+         const signature = await signer.signMessage(message);
+
+         document.getElementById("signature").innerHTML = "" + signature;
+      };
+
+   </script>
+</body>
+</html>
